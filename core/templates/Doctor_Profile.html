@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block css %}
+
+{% endblock %}
+{% block content %}
+<div class='container'>
+  <div class="content-section mt-3 p-3">
+      <h2 class='text-capitalize'>{{user.username}}'s Profile</h2>
+      <p>Your Profile Description:</p>
+      <section class="media  p-3 m-3 ">
+        <img src="{% static 'images/UserAvatar.jpg' %}" alt='ProfilePic' class="mr-3 mt-1 rounded-circle" style="width: 150px;">
+        <section class="media-body p-2 ">
+          <h4 class='text-capitalize'>{{user.get_full_name}} <small><i></i></small></h4>
+          <h6>Age:{{user.age}}</h6>
+          <h6>Gender:{{user.gender}}</h6>
+          <h6>Email:{{user.email}}</Address></h6>
+          <h6>Role:Doctor</h6>
+          <h6>Phone No:{{user.phoneno}}</h6>
+          <h6>Address:{{user.address}}</h6> 
+          <h6>AadharNo:{{doctor.AadharNo}}</h6>
+          <a href='#'><button class='btn-primary'>Update Profile</button></a>   
+        </div>
+
+      </div>
+    </div>
+  
+    
+  {% endblock %}

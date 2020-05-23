@@ -23,3 +23,16 @@ class ComplaintRegisterForm(forms.ModelForm):
     class Meta:
         model=Complaint
         fields=['Complaint_Name','Symptom1','Symptom2','Description']
+
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model=Users
+        fields=['first_name','last_name','email','username','password1','password2','age','gender','phoneno','address']
+
+
+class CreateAppointmentForm(forms.ModelForm):
+    class Meta:
+        
+        fields=['Doctor_Name','Patient_Name','Time','date']
