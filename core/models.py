@@ -27,7 +27,7 @@ class Users(AbstractUser):
 
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES,null=True,blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    age=models.IntegerField()
+    age=models.IntegerField(null=True,blank=True)
     phoneno=models.BigIntegerField(null=True,blank=True)
     address=models.TextField(null=True,blank=True)
 
