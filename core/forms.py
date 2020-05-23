@@ -26,7 +26,7 @@ class ComplaintRegisterForm(forms.ModelForm):
 
 
 
-class PatientUpdateForm(models.ModelForm):
+class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model=Users
-        fields=['first_name','last_name','email','username','password1','password2','age','gender','phoneno','address']
+        fields='__all__'

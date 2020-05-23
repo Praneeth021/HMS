@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
-from .forms import UserRegisterForm,DoctorRegisterForm,ProfileUpdateForm
-from .models import Users,Patient,Doctor
+from .forms import UserRegisterForm,DoctorRegisterForm,ProfileUpdateForm,ComplaintRegisterForm
+from .models import Users,Patient,Doctor,Complaint
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -112,4 +112,11 @@ def DoctorComplaintDetailView(request,id):
 def PrescriptionForm(request,primary_key):
     return render(request,'PrescriptionForm.html',{'primary_key':primary_key})
 
+@login_required
+def Invoices_And_Payments(request):
+    return render(request,'Invoice_And_Payments.html')
+
+@login_required
+def Patient_Appointment(request):
+    return render(request,'Patient_Appointment.html')
     
