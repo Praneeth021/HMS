@@ -9,8 +9,8 @@
     <section class="media  p-3 mt-3">
         <section class="media-body p-3">
             <h4>Complaint:<a href="{% url 'DoctorComplaintDetailView' complaint.id %}">{{complaint.Complaint_Name}}</a></h4><small>Posted on {{complaint.Date | date}}</small>
-            <h6>Registered patient:{{complaint.patient.user.username}}</h6>
-            <a href="{% url 'PrescriptionForm' complaint.id  %}" class='btn btn-success'>Advice Prescription</a>
+            <h6>Registered patient:{{complaint.patient}}</h6>
+            <a href="{% url 'AdvicePrescription' complaint.id  %}" class='btn btn-success'>Advice Prescription</a>
         </section>
     </section>
     {% endfor %}

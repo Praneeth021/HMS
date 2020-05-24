@@ -1,0 +1,35 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<style>  
+</style>
+{% endblock %}
+{% block content %}
+<div class='container mt-5'>   
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">S.no</th>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th scope="col">Consulting Patient</th>
+            <th scope='col'>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for appointment in Appointments %}
+            <th scope="row"></th>
+            <td>{{appointment.Date}}</td>
+            <td>{{apppointment.Time}}</td>
+            <td>{{appointment.doctor.user.username}}</td>
+            <td>{{apppointment.status}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+  
+  

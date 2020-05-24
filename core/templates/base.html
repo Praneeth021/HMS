@@ -44,6 +44,7 @@
             {% endif %}
             {% if user.is_authenticated and user.role == 2  %}
             <li class="nav-item"><a href="{% url 'Prescription' %}" class="nav-link"><span>Prescription</span></a></li>
+            <li class="nav-item"><a href="{% url 'DoctorAppointments' %}" class="nav-link"><span>Appointments</span></a></li>
             {% endif %}
             {% if user.is_authenticated and user.role == 1  %}
             <li class="nav-item"><a href="{% url 'Patient_Profile' %}" class="nav-link"><span>Profile</span></a></li>

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,reverse
 from django.contrib import messages
-from .forms import UserRegisterForm,DoctorRegisterForm,ProfileUpdateForm,ComplaintRegisterForm
-from .models import Users,Patient,Doctor,Complaint,Appointment
+from .forms import UserRegisterForm,DoctorRegisterForm,ComplaintRegisterForm,DoctorUpdateForm
+from .models import Users,Patient,Doctor,Complaint,Appointment,Prescription
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
 
@@ -127,8 +127,79 @@ def Patient_Appointment(request):
     
 
 @login_required
-def Prescription(request):
+def DoctorComplaintView(request):
     user=request.user
     doctor=Doctor.objects.get(user=user)
     complaint=Complaint.objects.filter(Doctor=doctor).values()
     return render(request,'DoctorComplaintView.html',{'complaints':complaint})
+
+
+
+def AdvicePrescription(request,id):
+    if request.method == 'POST':
+        Description=request.POST.get('Description')
+        Description.capitalize()
+        complaint=Complaint.objects.get(id=id)
+        patient=complaint.patient
+        doctor=complaint.Doctor
+        prescription=Prescription(Doctor=doctor,patient=patient)
+        prescription.Description=Description
+        prescription.complaint=complaint
+        prescription.save()
+        return redirect('Prescription')
+    return render(request,'Prescription_Form.html')
+
+
+
+
+def DoctorAppointments(request):
+    doctor=Doctor.objects.get(user=request.user)
+    appointments=Appointment.objects.filter(doctor=doctor).values()
+    return render(request,'Doctor_Appointments.html',{'appointments':appointments})
+
+
+
+
+
+def hr_dashboard(request):
+    doctors = Doctor.objects.all()
+    patients = Patient.objects.all()
+    total_patients = patients.count()
+    total_doctors = doctors.count()
+    onduty_doctors = doctors.filter(status='onduty').count()
+
+    context = {'total_doctors':total_doctors,
+    'total_patients':total_patients,
+    'onduty_doctors':onduty_doctors,'doctors':doctors }
+
+    return render(request, 'Hr_Dashboard.html', context)
+
+
+def updateDoctorForm(request, id):
+
+	doctor = Doctor.objects.get(user_id=id)
+	form = DoctorUpdateForm(instance=doctor)
+
+	if request.method == 'POST':
+		form = DoctorUpdateForm(request.POST, instance=doctor)
+		if form.is_valid():
+			form.save()
+			return redirect('Hr_Dashboard')
+
+	context = {'form':form}
+	return render(request, 'DoctorUpdateForm.html', context)
+
+
+def deleteDoctor(request,id):
+    doctor = Doctor.objects.get(user_id=id)
+    if request.method == "POST":
+        doctor.delete()
+        return redirect('Hr_Dashboard')
+
+    context = {'d':doctor}
+    return render(request, 'DoctorDelete.html', context)
+
+
+
+def Accounting(request):
+    return render(request,'Accounting.html')
