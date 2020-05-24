@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,reverse
 from django.contrib import messages
 from .forms import UserRegisterForm,DoctorRegisterForm,ProfileUpdateForm,ComplaintRegisterForm
-from .models import Users,Patient,Doctor,Complaint
+from .models import Users,Patient,Doctor,Complaint,Appointment
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import UpdateView
 
 # Create your views here.
 
@@ -65,11 +66,12 @@ def Doctor_Profile(request):
     return render(request,'Doctor_Profile.html')
 
 
-def Profile_Update(request):
-    if request.method=='POST':
-        updateform=ProfileUpdateForm(request.POST,prefix='userform')
-        if updateform.is_valid:
-            user=request.user
+class ProfileUpdate(UpdateView):
+    model=Users
+    fields=['first_name','last_name','email','username','password','age','gender','phoneno','address']
+    template_name='Patient_Signup.html'
+    def get_absolute_url(self):
+        return reverse('Patient_Profile', kwargs={'pk': self.pk})
 
 
 @login_required
@@ -84,23 +86,23 @@ def ComplaintRegistration(request):
             complaint.Doctor=doctor
             complaint.save()
             messages.success(request,f'Complaint Registered')
-            return redirect('HomePage')
+            return redirect('ComplaintListView')
     else:
         Doctors=Doctor.objects.all()
         complaintform=ComplaintRegisterForm(prefix='complaintform')
-        return render(request,'ComplaintRegistration.html',{'complaintform':complaintform,'Doctors':Doctors})
+        return render(request,'Complaint_Registration.html',{'complaintform':complaintform,'Doctors':Doctors})
 
 @login_required
 def ComplaintListView(request):
     patient=Patient.objects.get(user=request.user)
     complaints=Complaint.objects.filter(patient=patient).values()
-    template_name='ComplaintView.html'
+    template_name='Medical_History.html'
     return render(request,template_name,context={'complaints':complaints})
 
 @login_required
 def ComplaintDetailView(request,id):
     complaint=Complaint.objects.get(id=id)
-    return render(request,'ComplaintDetail.html',{'complaint':complaint})
+    return render(request,'Complaint_DetailView.html',{'complaint':complaint})
 
 @login_required
 def DoctorComplaintDetailView(request,id):
@@ -118,5 +120,15 @@ def Invoices_And_Payments(request):
 
 @login_required
 def Patient_Appointment(request):
-    return render(request,'Patient_Appointment.html')
+    user=request.user
+    patient=Patient.objects.get(user_id=user.id)
+    appointments=Appointment.objects.get(patient=patient)
+    return render(request,'Patient_Appointment.html',{'Appointments':appointments})
     
+
+@login_required
+def Prescription(request):
+    user=request.user
+    doctor=Doctor.objects.get(user=user)
+    complaint=Complaint.objects.filter(Doctor=doctor).values()
+    return render(request,'DoctorComplaintView.html',{'complaints':complaint})

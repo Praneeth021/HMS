@@ -3,7 +3,7 @@
 {% block css %}
 {% endblock %}
 {% block content %}
-<section class='content-section m-5 p-4'>
+<section class='container m-5 p-4'>
     <h3> Registered Complaints</h3>
     {%for complaint in complaints %}
     <section class="media  p-3 mt-3">
@@ -13,3 +13,6 @@
             <a href="{% url 'PrescriptionForm' complaint.id  %}" class='btn btn-success'>Advice Prescription</a>
         </section>
     </section>
+    {% endfor %}
+</section>
+{% endblock %}
