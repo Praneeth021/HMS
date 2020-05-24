@@ -36,10 +36,17 @@ class Users(AbstractUser):
         return reverse('Receiptionist')
 
 class Doctor(models.Model):
+    status_choices=(
+        ('onduty','onduty'),
+        ('offduty','offduty'),
+    )
     user=models.OneToOneField(Users,on_delete=models.CASCADE,primary_key=True)
     Education=models.CharField(max_length=500)
     Specialization=models.CharField(max_length=500)
     AadharNo=models.IntegerField()
+    Attendence=models.IntegerField(null=True,blank=True)
+    Salary=models.IntegerField(null=True,blank=True)
+    status=models.CharField(choices=status_choices,max_length=300)
 
     def __str__(self):
         return self.user.username
@@ -100,3 +107,6 @@ class Invoices(models.Model):
     Total_Amount=models.IntegerField()
     Paid_Amount=models.IntegerField()
     date=models.DateField()
+
+
+

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br>
+
+<div class="row">
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="total-orders">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Total Doctors</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{total_doctors}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="orders-delivered">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Total Patients</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{total_patients}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="orders-pending">
+			  	<div class="card-header">
+			  		<h5 class="card-title">On Duty Doctors</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{onduty_doctors}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<h3>
+    Doctors
+</h3>
+<br>
+
+<div class="row">
+	<div class="col-md-12">
+		<h5>LAST 5 ORDERS</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="#">Doctors</a>
+			<table class="table table-sm">
+				<tr>
+					<th>Name</th>
+					<th>Phone</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Department</th>
+                    <th>Attendence</th>
+                    <th>Salary</th>
+					<th>Update</th>
+					<th>Remove</th>
+				</tr>
+
+				{% for d in doctors %}
+					<tr>
+						<td>{{d.user.username}}</td>
+						<td>{{d.user.gender}}</td>
+                        <td>{{d.user.email}}</td>
+                        <td>{{d.user.gender}}</td>
+                        <td>{{d.user.age}}</td>
+                        <td>{{d.Specialization}}</td>
+                        <td>{{d.Attendence}}</td>
+                        <td>{{d.Salary}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'updateDoctorForm' d.user_id %}">Update</a></td>
+
+						<td><a class="btn btn-sm btn-danger" href="{% url 'deleteDoctor' d.user_id %}">Delete</a></td>
+
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}

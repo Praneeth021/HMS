@@ -31,3 +31,7 @@ class AppointmentForm(forms.ModelForm):
 
 
 
+class DoctorUpdateForm(forms.ModelForm):
+    class Meta:
+        model=Doctor
+        fields=['Attendence','Salary','status']

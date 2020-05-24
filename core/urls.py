@@ -26,4 +26,14 @@ urlpatterns = [
     path('ReceptioinstRegister/',views.CreateReceptionist,name='Receptionist'),
     path('Patient_Profile/<int:pk>',views.PatientUpdate.as_view(),name='PatientUpdate'),
     path('delete_patient/<str:pk>/', views.deleteProfile, name="delete_profile")
+    path('Prescription/',views.DoctorComplaintView,name='Prescription'),
+    path('Prescritption/<int:id>',views.DoctorComplaintDetailView,name='DoctorComplaintDetailView'),
+    path('PrescritptionForm/<int:id>',views.AdvicePrescription,name='AdvicePrescription'),
+    path('DoctorAppointments/',views.DoctorAppointments,name='DoctorAppointments'),
+    path('Hr_Dashboard/',views.hr_dashboard,name='Hr_Dashboard'),
+    path('Hr_Dashboard/DoctorUpdateForm/<int:id>',views.updateDoctorForm,name='updateDoctorForm'),
+    path('Hr_Dashboard/DoctorDeleteForm/<int:id>',views.deleteDoctor,name='deleteDoctor'),
+    path('Accounting/',views.Accounting,name='Accountinng')
+
+
 ]

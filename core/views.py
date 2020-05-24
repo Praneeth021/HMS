@@ -34,6 +34,8 @@ def Register(request):
 def Receiptionist(request):
     patient=Patient.objects.all()
     appointment=Appointment.objects.all()
+    total_appointment=appointment.count()
+    pending=
     return render(request,'receiptionist.html',{'patient':patient,'appointment':appointment})
 
 
