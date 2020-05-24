@@ -1,10 +1,38 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
-from .forms import UserRegisterForm,DoctorRegisterForm,ProfileUpdateForm
-from .models import Users,Patient,Doctor
+from .forms import UserRegisterForm,DoctorRegisterForm,ComplaintRegisterForm
+from .models import Users,Patient,Doctor,Complaint
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+from django.views.generic import ListView,DetailView, CreateView, UpdateView, DeleteView
 
 # Create your views here.
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model= Patient
+    #fields= ['title', 'content']
+    fields=['first_name','last_name','email','username','password1','password2','age','gender','phoneno','address']
+    template_name='Patient_Signup.html'
+    def form_valid(self, form):
+        form.instance.author= self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post= self.get_object()
+        if(self.request.user =='receiptionist'):
+            return True
+        return False
+
+class ProfileDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model= Patient
+    success_url='/'
+    template_name='confirm_delete.html'
+    def test_func(self):
+        post= self.get_object()
+        if(self.request.user =='receiptionist'):
+            return True
+        return False
 
 def HomePage(request):
     return render(request,'index.html')
@@ -14,10 +42,32 @@ def Register(request):
     return render(request,'Register.html')
 
 def Receiptionist(request):
-    return render(request,'receiptionist.html')
+    patient=Patient.objects.all()
+    return render(request,'receiptionist.html',{'patient':patient})
 
 def CreatePatient(request):
-    return render(request,'Patient_Signup.html')
+   
+    if(request.method== 'POST'): 
+        form= UserRegisterForm(request.POST)
+        if form.is_valid():
+            user=form.save()
+            user.role = Users.PATIENT
+            user.save()
+            patient = Patient(user=user)
+            patient.save()
+            username= form.cleaned_data.get('username')
+            messages.success(request, f'Created a patient')
+            return redirect('Receiptionist')
+            
+    else:    
+         form= UserRegisterForm()
+    return render(request, 'Patient_signup.html', {'form': form,'patient':patient})
+
+    
+   
+
+
+
 
 def doctor_signup(request):
     if request.method=='POST':
@@ -70,11 +120,8 @@ def Doctor_Profile(request):
     return render(request,'Doctor_Profile.html')
 
 
-def Profile_Update(request):
-    if request.method=='POST':
-        updateform=ProfileUpdateForm(request.POST,prefix='userform')
-        if updateform.is_valid:
-            user=request.user
+
+
 
 
 @login_required
@@ -117,4 +164,11 @@ def DoctorComplaintDetailView(request,id):
 def PrescriptionForm(request,primary_key):
     return render(request,'PrescriptionForm.html',{'primary_key':primary_key})
 
+@login_required
+def Invoices_And_Payments(request):
+    return render(request,'Invoice_And_Payments.html')
+
+@login_required
+def Patient_Appointment(request):
+    return render(request,'Patient_Appointment.html')
     

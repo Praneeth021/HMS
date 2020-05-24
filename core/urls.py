@@ -2,6 +2,7 @@ from django.urls import path
 from django.conf.urls import include
 from . import views
 from django.contrib.auth import views as auth_views
+from .views import (ProfileDeleteView)
 
 urlpatterns = [
     path('',views.HomePage,name='HomePage'),
@@ -13,5 +14,10 @@ urlpatterns = [
     path('Patient_Profile/',views.Patient_Profile,name='Patient_Profile'),
     path('Doctor_Profile/',views.Doctor_Profile,name='Doctor_Profile'),
     path('receiptionist/',views.Receiptionist,name='Receiptionist'),
-    path('create-patient/', views.CreatePatient, name='CreatePatient')
+    path('create-patient/', views.CreatePatient, name='CreatePatient'),
+    path('Complaints/',views.ComplaintListView,name='ComplaintListView'),
+    path('Invoices&Payments/',views.Invoices_And_Payments,name='Invoices_And_Payments'),
+    path('Patient_Appointment/',views.Patient_Appointment,name='Patient_Appointment'),
+
+    path('<int:pk>/delete/', views.ProfileDeleteView, name='post-delete'),
 ]

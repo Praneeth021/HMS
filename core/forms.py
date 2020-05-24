@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Users
-from .models import Doctor,Complaint
+from .models import Doctor,Complaint,Appointement,Patient
 
 
 class UserRegisterForm(UserCreationForm):
@@ -24,15 +24,7 @@ class ComplaintRegisterForm(forms.ModelForm):
         model=Complaint
         fields=['Complaint_Name','Symptom1','Symptom2','Description']
 
-
-
-class ProfileUpdateForm(forms.ModelForm):
+class AppointmentForm(forms.ModelForm):
     class Meta:
-        model=Users
-        fields=['first_name','last_name','email','username','password1','password2','age','gender','phoneno','address']
-
-
-class CreateAppointmentForm(forms.ModelForm):
-    class Meta:
-        
-        fields=['Doctor_Name','Patient_Name','Time','date']
+        model=Appointement
+        fields=['Date','Time','doctor','patient','status']

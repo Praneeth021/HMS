@@ -1,11 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
-{%block css %}
+{%  block css %}
 
 {% endblock %}
 {% block content %}
-  <div>
-    <a class="btn btn-secondary-sm mt-1 mb-1" href="{% url 'CreatePatient'  %}">Create Patient</a>
-  </div>  
-  
+   <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <a class="btn btn-secondary-sm mt-1 mb-1" href="{% url 'CreatePatient'  %}">Create Patient</a>
+        <div class="content-section">
+          <table border="1" style="width:500px">
+          <tr>
+            <th>Patient</th>
+            <th>Email</th>
+            <th>PhNo</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Update</th>
+            <th>Delete</th>
+          </tr>
+          {% for p in patient %}
+          <tr>
+            <td>{{p.user}}</td>
+            <td>{{p.user.email}}</td>
+            <td>{{p.user.phoneno}}</td>
+            <td>{{p.user.gender}}</td>
+            <td>{{p.user.age}}</td>
+            <td> <a class="btn btn-secondary-sm mt-1 mb-1" href="{% url 'post-update'  %}">Update</a></td>
+            <td><a class="btn btn-danger-sm mt-1 mb-1" href="{% url 'post-delete'  %}">Delete</a> </td>  
+
+          </tr>
+           {% endfor %}
+          
+          </table>
+        </div>
+      </div> 
+      <div class="col-md-12">
+        
+      </div>  
+    </div>
+   </div>
  {% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+{% endblock %}
+{% block content %}
+<section class='content-section m-5 p-4'>
+    <h3> Registered Complaints</h3>
+    {%for complaint in complaints %}
+    <section class="media  p-3 mt-3">
+        <section class="media-body p-3">
+            <h4>Complaint:<a href="{% url 'DoctorComplaintDetailView' complaint.id %}">{{complaint.Complaint_Name}}</a></h4><small>Posted on {{complaint.Date | date}}</small>
+            <h6>Registered patient:{{complaint.patient.user.username}}</h6>
+            <a href="{% url 'PrescriptionForm' complaint.id  %}" class='btn btn-success'>Advice Prescription</a>
+        </section>
+    </section>

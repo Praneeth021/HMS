@@ -1,5 +1,3 @@
-
-
 # Create your models here.
 
 from django.contrib.auth.models import AbstractUser
@@ -82,7 +80,7 @@ class HR(models.Model):
 
 
 
-class Appointement(models.Model):
+class Appointement(models.Model): 
     status_choices=(
         ('Completed','Completed'),
         ('Pending','Pending'),
