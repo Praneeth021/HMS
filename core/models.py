@@ -106,6 +106,7 @@ class Invoices(models.Model):
     patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
     Total_Amount=models.IntegerField()
     Paid_Amount=models.IntegerField()
+    Outstanding=models.IntegerField()
     date=models.DateField()
 
 

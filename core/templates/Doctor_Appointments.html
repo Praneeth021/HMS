@@ -10,7 +10,6 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
-            <th scope="col">S.no</th>
             <th scope="col">Date</th>
             <th scope="col">Time</th>
             <th scope="col">Consulting Patient</th>
@@ -19,12 +18,11 @@
         </thead>
         <tbody>
             <tr>
-            {% for appointment in Appointments %}
-            <th scope="row"></th>
+            {% for appointment in appointments %}
             <td>{{appointment.Date}}</td>
-            <td>{{apppointment.Time}}</td>
-            <td>{{appointment.doctor.user.username}}</td>
-            <td>{{apppointment.status}}</td>
+            <td>{{appointment.Time}}</td>
+            <td>{{appointment.patient}}</td>
+            <td>{{appointment.status}}</td>
             </tr>
             {% endfor %}
         </tbody>

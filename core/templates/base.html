@@ -56,6 +56,10 @@
             {% if user.is_authenticated and user.role == 4 %}
             <li class="nav-item"><a href="{% url 'Receiptionist' %}" class="nav-link"><span>Dashboard</span></a></li>
             {% endif %}
+            {% if user.is_authenticated and user.role == 3 %}
+            <li class="nav-item"><a href="{% url 'Hr_Dashboard' %}" class="nav-link"><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="{% url 'Accounting' %}" class="nav-link"><span>Accounting</span></a></li>
+            {% endif %}
             
             {% if user.is_authenticated %}
             <li class="nav-item"><a href="{% url 'Logout' %}" class="nav-link"><span>Logout</span></a></li>
