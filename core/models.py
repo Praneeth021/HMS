@@ -32,6 +32,9 @@ class Users(AbstractUser):
     def __str__(self):
         return self.username
 
+    def get_absolute_url(self):
+        return reverse('Receiptionist')
+
 class Doctor(models.Model):
     user=models.OneToOneField(Users,on_delete=models.CASCADE,primary_key=True)
     Education=models.CharField(max_length=500)
@@ -80,15 +83,15 @@ class HR(models.Model):
 
 
 
-class Appointement(models.Model): 
+class Appointment(models.Model):
     status_choices=(
         ('Completed','Completed'),
         ('Pending','Pending'),
     )
     patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
     doctor=models.ForeignKey(Doctor,on_delete=models.CASCADE)
-    Time=models.DateTimeField()
-    Date=models.DateTimeField()
+    Time=models.TimeField()
+    Date=models.DateField()
     status=models.CharField(choices=status_choices,max_length=300)
 
 
@@ -96,4 +99,4 @@ class Invoices(models.Model):
     patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
     Total_Amount=models.IntegerField()
     Paid_Amount=models.IntegerField()
-    date=models.DateTimeField()
+    date=models.DateField()

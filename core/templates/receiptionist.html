@@ -4,40 +4,111 @@
 
 {% endblock %}
 {% block content %}
-   <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <a class="btn btn-secondary-sm mt-1 mb-1" href="{% url 'CreatePatient'  %}">Create Patient</a>
-        <div class="content-section">
-          <table border="1" style="width:500px">
-          <tr>
-            <th>Patient</th>
-            <th>Email</th>
-            <th>PhNo</th>
-            <th>Gender</th>
-            <th>Age</th>
-            <th>Update</th>
-            <th>Delete</th>
-          </tr>
-          {% for p in patient %}
+  <br>
+<div class="row">
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="total-orders">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Total Appointments</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{total_appointments}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="orders-delivered">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Completed </h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{completed}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="orders-pending">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Pending</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{pending}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Patients:</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="">Create Patient</a>
+			<table class="table table-sm">
+				<tr>
+					
+					<th>Patient</th>
+          <th>Email</th>
+          <th>PhNo</th>
+          <th>Gender</th>
+          <th>Age</th>
+          <th>Update</th>
+          <th>Delete</th>
+				</tr>
+
+				{% for p in patient %}
           <tr>
             <td>{{p.user}}</td>
             <td>{{p.user.email}}</td>
             <td>{{p.user.phoneno}}</td>
             <td>{{p.user.gender}}</td>
             <td>{{p.user.age}}</td>
-            <td> <a class="btn btn-secondary-sm mt-1 mb-1" href="{% url 'post-update'  %}">Update</a></td>
-            <td><a class="btn btn-danger-sm mt-1 mb-1" href="{% url 'post-delete'  %}">Delete</a> </td>  
-
+            <td><a href='{% url "ProfileUpdate" p.user_id %}'><button class='btn-primary'>Update</button></a></td>
+            <td><a href='{% url "delete_profile" p.user_id %}'><button class='btn-primary'>Delete</button></a></td>
           </tr>
            {% endfor %}
-          
-          </table>
-        </div>
-      </div> 
-      <div class="col-md-12">
-        
-      </div>  
-    </div>
-   </div>
+
+			</table>
+		</div>
+	</div>
+
+	<div class="col-md-7">
+		<h5>Appointments</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'create_order' %}">Create Appointment</a>
+			<table class="table table-sm">
+				<tr>
+					<th>Date</th>
+					<th>Time</th>
+					<th>Doctor</th>
+					<th>Patient</th>
+					<th>Status</th>
+				</tr>
+
+				{% for a in Appointment %}
+					<tr>
+						<td>{{a.Date}}</td>
+            <td>{{a.Time}}</td>
+            <td>{{a.patient}}</td>
+            <td>{{a.doctor}}</td>
+						<td>{{a.status}}</td>
+					</tr>
+				{% endfor %}
+
+		
+			</table>
+		</div>
+	</div>
+
+</div>
  {% endblock %}

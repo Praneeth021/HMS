@@ -16,7 +16,7 @@
         <h6>Role:Patient</h6>
         <h6>Phone No:{{user.phoneno}}</h6>
         <h6>Address:{{user.address}}</h6>  
-        <a href='#'><button class='btn-primary'>Update</button></a>    
+        <a href='{% url "ProfileUpdate" user.id %}'><button class='btn-primary'>Update</button></a>    
       </div>
     </div>
     

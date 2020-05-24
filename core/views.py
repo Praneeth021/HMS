@@ -1,38 +1,28 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,reverse
 from django.contrib import messages
 from .forms import UserRegisterForm,DoctorRegisterForm,ComplaintRegisterForm
-from .models import Users,Patient,Doctor,Complaint
+from .models import Users,Patient,Doctor,Complaint,Appointment,Receptionist
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
-from django.views.generic import ListView,DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import DeleteView
 
 # Create your views here.
-
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model= Patient
-    #fields= ['title', 'content']
-    fields=['first_name','last_name','email','username','password1','password2','age','gender','phoneno','address']
-    template_name='Patient_Signup.html'
-    def form_valid(self, form):
-        form.instance.author= self.request.user
-        return super().form_valid(form)
-
-    def test_func(self):
-        post= self.get_object()
-        if(self.request.user =='receiptionist'):
-            return True
-        return False
 
 class ProfileDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model= Patient
     success_url='/'
     template_name='confirm_delete.html'
-    def test_func(self):
-        post= self.get_object()
-        if(self.request.user =='receiptionist'):
-            return True
-        return False
+
+def deleteProfile(request, pk):
+	profile = Patient.objects.get(id=pk)
+	if request.method == "POST":
+		profile.delete()
+		return redirect('/')
+
+	context = {'profile':profile}
+	return render(request, 'confirm_delete.html', context)
+
 
 def HomePage(request):
     return render(request,'index.html')
@@ -43,7 +33,9 @@ def Register(request):
 
 def Receiptionist(request):
     patient=Patient.objects.all()
-    return render(request,'receiptionist.html',{'patient':patient})
+    appointment=Appointment.objects.all()
+    return render(request,'receiptionist.html',{'patient':patient,'appointment':appointment})
+
 
 def CreatePatient(request):
    
@@ -63,6 +55,19 @@ def CreatePatient(request):
          form= UserRegisterForm()
     return render(request, 'Patient_signup.html', {'form': form,'patient':patient})
 
+def CreateAppointment(request):
+   
+    if(request.method== 'POST'): 
+        form= AppointmentForm(request.POST)
+        if form.is_valid():
+            user=form.save()
+            username= form.cleaned_data.get('username')
+            messages.success(request, f'Created a Appointment')
+            return redirect('Receiptionist')
+            
+    else:    
+         form= AppointmentForm()
+    return render(request, 'create_appointment.html', {'form': form})
     
    
 
@@ -120,8 +125,17 @@ def Doctor_Profile(request):
     return render(request,'Doctor_Profile.html')
 
 
+class ProfileUpdate(UpdateView):
+    model=Users
+    fields=['first_name','last_name','email','username','password','age','gender','phoneno','address']
+    template_name='Patient_Signup.html'
+    
 
-
+class PatientUpdate(UpdateView):
+    model=Users
+    fields=['first_name','last_name','email','username','password','age','gender','phoneno','address']
+    template_name='Patient_Profile.html'
+    
 
 
 @login_required
@@ -136,23 +150,23 @@ def ComplaintRegistration(request):
             complaint.Doctor=doctor
             complaint.save()
             messages.success(request,f'Complaint Registered')
-            return redirect('HomePage')
+            return redirect('ComplaintListView')
     else:
         Doctors=Doctor.objects.all()
         complaintform=ComplaintRegisterForm(prefix='complaintform')
-        return render(request,'ComplaintRegistration.html',{'complaintform':complaintform,'Doctors':Doctors})
+        return render(request,'Complaint_Registration.html',{'complaintform':complaintform,'Doctors':Doctors})
 
 @login_required
 def ComplaintListView(request):
     patient=Patient.objects.get(user=request.user)
     complaints=Complaint.objects.filter(patient=patient).values()
-    template_name='ComplaintView.html'
+    template_name='Medical_History.html'
     return render(request,template_name,context={'complaints':complaints})
 
 @login_required
 def ComplaintDetailView(request,id):
     complaint=Complaint.objects.get(id=id)
-    return render(request,'ComplaintDetail.html',{'complaint':complaint})
+    return render(request,'Complaint_DetailView.html',{'complaint':complaint})
 
 @login_required
 def DoctorComplaintDetailView(request,id):
@@ -170,5 +184,37 @@ def Invoices_And_Payments(request):
 
 @login_required
 def Patient_Appointment(request):
-    return render(request,'Patient_Appointment.html')
+    user=request.user
+    patient=Patient.objects.get(user_id=user.id)
+    appointments=Appointment.objects.get(patient=patient)
+    return render(request,'Patient_Appointment.html',{'Appointments':appointments})
     
+
+@login_required
+def Prescription(request):
+    user=request.user
+    doctor=Doctor.objects.get(user=user)
+    complaint=Complaint.objects.filter(Doctor=doctor).values()
+    return render(request,'DoctorComplaintView.html',{'complaints':complaint})
+
+
+
+
+
+def CreateReceptionist(request):
+   
+    if(request.method== 'POST'): 
+        form= UserRegisterForm(request.POST)
+        if form.is_valid():
+            user=form.save()
+            user.role = Users.RECEPTIONIST
+            user.save()
+            receptioinist = Receptionist(user=user)
+            receptioinist.save()
+            username= form.cleaned_data.get('username')
+            messages.success(request, f'Created a patient')
+            return redirect('Receiptionist')
+            
+    else:    
+         form= UserRegisterForm()
+    return render(request, 'Patient_signup.html', {'form': form,})
