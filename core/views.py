@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,reverse
 from django.contrib import messages
 from .forms import UserRegisterForm,DoctorRegisterForm,ComplaintRegisterForm,DoctorUpdateForm,AppointmentForm
-from .models import Users,Patient,Doctor,Complaint,Appointment,Prescription
+from .models import Users,Patient,Doctor,Complaint,Appointment,Prescription,Invoices
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
 
@@ -12,10 +12,22 @@ from django.views.generic import DeleteView
 
 # Create your views here.
 
-class ProfileDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model= Patient
-    success_url='/'
-    template_name='confirm_delete.html'
+@login_required
+def updatePatientForm(request,id):
+
+	patient = Patient.objects.get(user_id=id)
+	form = UserRegisterForm(instance=patient)
+
+	if request.method == 'POST':
+		form = UserRegisterForm(request.POST, instance=patient)
+		if form.is_valid():
+			form.save()
+			return redirect('Patient_Profile')
+
+	context = {'form':form}
+	return render(request, 'Patient_Signup.html', context)
+
+
 
 def deleteProfile(request, pk):
 	profile = Patient.objects.get(id=pk)
@@ -148,21 +160,14 @@ def patient_signup(request):
         return render(request=request, template_name='Patient_Signup.html',context={'form': userform,'doctors':doctors})
 
 
-
+@login_required
 def Patient_Profile(request):
     return render(request,'Patient_Profile.html')
 
-
+@login_required
 def Doctor_Profile(request):
     return render(request,'Doctor_Profile.html')
 
-
-class ProfileUpdate(UpdateView):
-    model=Users
-    fields=['first_name','last_name','email','username','password','age','gender','phoneno','address']
-    template_name='Patient_Signup.html'
-    def get_absolute_url(self):
-        return reverse('Patient_Profile', kwargs={'pk': self.pk})
 
 
 @login_required
@@ -186,7 +191,7 @@ def ComplaintRegistration(request):
 @login_required
 def ComplaintListView(request):
     patient=Patient.objects.get(user=request.user)
-    complaints=Complaint.objects.filter(patient=patient).values()
+    complaints=Complaint.objects.filter(patient=patient)
     template_name='Medical_History.html'
     return render(request,template_name,context={'complaints':complaints})
 
@@ -207,13 +212,15 @@ def PrescriptionForm(request,primary_key):
 
 @login_required
 def Invoices_And_Payments(request):
-    return render(request,'Invoice_And_Payments.html')
+    patient=Patient.objects.get(user=request.user)
+    invoice=Invoices.objects.filter(patient=patient)
+    return render(request,'Invoice_And_Payments.html',{'invoice':invoice})
 
 @login_required
 def Patient_Appointment(request):
     user=request.user
     patient=Patient.objects.get(user_id=user.id)
-    appointments=Appointment.objects.filter(patient=patient).values()
+    appointments=Appointment.objects.filter(patient=patient)
     return render(request,'Patient_Appointment.html',{'Appointments':appointments})
     
 
@@ -221,7 +228,7 @@ def Patient_Appointment(request):
 def DoctorComplaintView(request):
     user=request.user
     doctor=Doctor.objects.get(user=user)
-    complaint=Complaint.objects.filter(Doctor=doctor).values()
+    complaint=Complaint.objects.filter(Doctor=doctor)
     return render(request,'DoctorComplaintView.html',{'complaints':complaint})
 
 
@@ -245,7 +252,7 @@ def AdvicePrescription(request,id):
 
 def DoctorAppointments(request):
     doctor=Doctor.objects.get(user=request.user)
-    appointments=Appointment.objects.filter(doctor=doctor).values()
+    appointments=Appointment.objects.filter(doctor=doctor)
     return render(request,'Doctor_Appointments.html',{'appointments':appointments})
 
 
@@ -293,7 +300,8 @@ def deleteDoctor(request,id):
 
 
 def Accounting(request):
-    return render(request,'Accounting.html')
+    invoices=Invoices.objects.all()
+    return render(request,'Accounting.html',{'invoice':invoices})
 
 
 
@@ -314,3 +322,10 @@ def CreateReceptionist(request):
     else:    
          form= UserRegisterForm()
     return render(request, 'Patient_signup.html', {'form': form,})
+
+
+
+
+def Invoicess(request,id):
+    invoice=Invoices.objects.get(id=id)
+    return render(request,'invoice.html',{'i':invoice})

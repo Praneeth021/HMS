@@ -11,31 +11,21 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
-            <th scope="col">S.no</th>
             <th scope="col">Invoice</th>
             <th scope="col">Paid</th>
+            <th scope='col'>Total Amount</th>
             <th scope="col">Date</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            {% for i in invoice %}
+            <td><a href="{% url 'Invoice' i.id %}">Open Invoice</a></td>
+            <td>{{i.Total_Amount}}</td>
+            <td>{{i.Paid_Amount}}</td>
+            <td>{{i.Date}}</td>
             </tr>
-            <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            </tr>
-            <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

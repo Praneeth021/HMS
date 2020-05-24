@@ -112,8 +112,8 @@
                             
                             <td>
                                 Invoice #: 123<br>
-                                Created: January 1, 2015<br>
-                                Due: February 1, 2015
+                                Created: {{i.Date}}<br>
+                               
                             </td>
                         </tr>
                     </table>
@@ -125,15 +125,11 @@
                     <table>
                         <tr>
                             <td>
-                                Sparksuite, Inc.<br>
-                                12345 Sunny Road<br>
-                                Sunnyville, CA 12345
+                                {{i.patient}}<br>
                             </td>
                             
                             <td>
-                                Acme Corp.<br>
-                                John Doe<br>
-                                john@example.com
+                               
                             </td>
                         </tr>
                     </table>
@@ -152,59 +148,31 @@
             
             <tr class="details">
                 <td>
-                    Check
+                    Total Amount
                 </td>
                 
                 <td>
-                    1000
+                    {{i.Total_Amount}}
                 </td>
             </tr>
             
             <tr class="heading">
                 <td>
-                    Item
+                    Paid Amount
                 </td>
                 
                 <td>
-                    Price
+                    {{i.Paid_Amount}}
                 </td>
             </tr>
             
             <tr class="item">
                 <td>
-                    Website design
+                    Out Standing
                 </td>
                 
                 <td>
-                    $300.00
-                </td>
-            </tr>
-            
-            <tr class="item">
-                <td>
-                    Hosting (3 months)
-                </td>
-                
-                <td>
-                    $75.00
-                </td>
-            </tr>
-            
-            <tr class="item last">
-                <td>
-                    Domain name (1 year)
-                </td>
-                
-                <td>
-                    $10.00
-                </td>
-            </tr>
-            
-            <tr class="total">
-                <td></td>
-                
-                <td>
-                   Total: $385.00
+                    {{i.Outstanding}}
                 </td>
             </tr>
         </table>

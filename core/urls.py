@@ -2,7 +2,6 @@ from django.urls import path
 from django.conf.urls import include
 from . import views
 from django.contrib.auth import views as auth_views
-from .views import (ProfileDeleteView)
 
 urlpatterns = [
     path('',views.HomePage,name='HomePage'),
@@ -12,7 +11,7 @@ urlpatterns = [
     path('Login/',auth_views.LoginView.as_view(template_name='Login.html'),name='Login'),
     path('Logout',auth_views.LogoutView.as_view(),name='Logout'),
     path('Patient_Profile/',views.Patient_Profile,name='Patient_Profile'),
-    path('Patient_Profile/<int:pk>',views.ProfileUpdate.as_view(),name='ProfileUpdate'),
+    path('PatientUpdate/<int:id>',views.updatePatientForm,name='ProfileUpdate'),
     path('Doctor_Profile/',views.Doctor_Profile,name='Doctor_Profile'),
     path('receiptionist/',views.Receiptionist,name='Receiptionist'),
     path('create-patient/', views.CreatePatient, name='CreatePatient'),
@@ -32,7 +31,8 @@ urlpatterns = [
     path('Hr_Dashboard/DoctorUpdateForm/<int:id>',views.updateDoctorForm,name='updateDoctorForm'),
     path('Hr_Dashboard/DoctorDeleteForm/<int:id>',views.deleteDoctor,name='deleteDoctor'),
     path('Accounting/',views.Accounting,name='Accounting'),
-    path('deletePatient/<int:id>',views.deletePatient,name='deletePatient')
+    path('deletePatient/<int:id>',views.deletePatient,name='deletePatient'),
+    path('Invoices/<int:id>',views.Invoicess,name='Invoice')
 
 
 ]

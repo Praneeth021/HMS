@@ -3,7 +3,7 @@
 <br>
 <div class='container'>
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-12">
             <h5>INDIVIDUAL OUTSTANDINGS</h5>
             <hr>
             <div class="card card-body">
@@ -11,18 +11,19 @@
                 <table class="table table-sm">
                     <tr>
                         <th>Patient</th>
-                        <th>Outstandings</th>
+                        <th>Total_Amount</th>
                         <th>Paid</th>
                         <th>Remainder</th>
+                        <th>Invoices</th>
                     </tr>
     
-                    {% for p in patients %}
+                    {% for i in invoice %}
                         <tr>
-                            <td><a class="btn btn-sm btn-info" href="{% url 'customer' customer.id %}">View</a></td>
-                            <td>{{p.user.username}}</td>
-                            <td></td>
-                            <td></td>
-                            <td><a href="" class='btn-primary'>Send Reminder</a></td>
+                            <td>{{i.patient.user.username}}</td>
+                            <td>{{i.Total_Amount}}</td>
+                            <td>{{i.Paid_Amount}}</td>
+                            <td>{{i.Outstanding}}</td>
+                            <td><a href="{% url 'Invoice' i.id %}">Open invoice</a></td>
                         </tr>
                     {% endfor %}
     
@@ -30,36 +31,7 @@
             </div>
         </div>
     
-        <div class="col-md-7">
-            <h5>CONSULTATION OUTSTANDINGS</h5>
-            <hr>
-            <div class="card card-body">
-                <a class="btn btn-primary  btn-sm btn-block" href="#">Consultation Outstandings</a>
-                <table class="table table-sm">
-                    <tr>
-                        <th>Date</th>
-                        <th>Patient Name</th>
-                        <th>Outstandings</th>
-                        <th>Paid</th>
-                        <th>Total</th>
-                        <th>Invoice</th>
-                    </tr>
-    
-                    {% for p in patients %}
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-    
-                        </tr>
-                    {% endfor %}
-    
-            
-                </table>
-            </div>
-        </div>
+        
     
     </div>
     

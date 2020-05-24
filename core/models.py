@@ -107,7 +107,7 @@ class Invoices(models.Model):
     Total_Amount=models.IntegerField()
     Paid_Amount=models.IntegerField()
     Outstanding=models.IntegerField()
-    date=models.DateField()
+    Date=models.DateField()
 
 
 
